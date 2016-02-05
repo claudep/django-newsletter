@@ -14,7 +14,8 @@ from django.utils.six.moves import range
 from django.utils.timezone import now
 
 from newsletter.models import (
-    Newsletter, Subscription, Submission, Message, Article, get_default_sites
+    Newsletter, Subscription, Bounce, Submission, Message, Article,
+    get_default_sites,
 )
 from newsletter.utils import ACTIONS
 
@@ -242,6 +243,17 @@ class SubscriptionTestCase(UserTestCase, MailingTestCase):
     def test_usersubscription(self):
         self.assertEqual(self.us.name, self.user.get_full_name())
         self.assertEqual(self.us.email, self.user.email)
+
+    def test_subscription_with_bounces(self):
+        """
+        A subscription with hard bounces is excluded from future sendings.
+        """
+        self.assertEqual(len(self.n.get_subscriptions()), 1)
+        Bounce.objects.create(
+            subscription=self.s, hard=True, status_code='5.1.1',
+            content="content of the bounce"
+        )
+        self.assertEqual(len(self.n.get_subscriptions()), 0)
 
     def test_subscribe_unsubscribe(self):
         for s in self.ss:

@@ -33,7 +33,7 @@ from django.views.i18n import javascript_catalog
 from sorl.thumbnail.admin import AdminImageMixin
 
 from .models import (
-    Newsletter, Subscription, Article, Message, Submission
+    Newsletter, Subscription, Bounce, Article, Message, Submission
 )
 
 from django.utils.timezone import now
@@ -340,6 +340,15 @@ class MessageAdmin(NewsletterAdminLinkMixin, ExtendibleModelAdminMixin,
         return my_urls + urls
 
 
+class BounceInline(admin.TabularInline):
+    model = Bounce
+    extra = 0
+    max_num = 0
+    ordering = ['-date_create']
+    exclude = ['content']
+    readonly_fields = ['date_create', 'status_code']
+
+
 class SubscriptionAdmin(NewsletterAdminLinkMixin, ExtendibleModelAdminMixin,
                         admin.ModelAdmin):
     form = SubscriptionAdminForm
@@ -361,6 +370,7 @@ class SubscriptionAdmin(NewsletterAdminLinkMixin, ExtendibleModelAdminMixin,
     date_hierarchy = 'subscribe_date'
     actions = ['make_subscribed', 'make_unsubscribed']
     exclude = ['unsubscribed']
+    inlines = [BounceInline]
 
     """ List extensions """
     def admin_status(self, obj):

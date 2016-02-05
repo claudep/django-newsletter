@@ -6,7 +6,7 @@ from django.contrib.sites.managers import CurrentSiteManager
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink
+from django.db.models import Case, Sum, When, permalink
 from django.template import Context
 from django.template.loader import select_template
 from django.utils.encoding import python_2_unicode_compatible
@@ -143,7 +143,13 @@ class Newsletter(models.Model):
     def get_subscriptions(self):
         logger.debug(u'Looking up subscribers for %s', self)
 
-        return Subscription.objects.filter(newsletter=self, subscribed=True)
+        return Subscription.objects.annotate(
+            num_hard_bounces=Sum(
+                Case(When(bounce__hard=True, then=1),
+                     default=0,
+                     output_field=models.IntegerField())
+            )
+        ).filter(newsletter=self, subscribed=True, num_hard_bounces=0)
 
     @classmethod
     def get_default(cls):
@@ -420,6 +426,33 @@ class Subscription(models.Model):
 
 
 @python_2_unicode_compatible
+class Bounce(models.Model):
+    """
+    A bounce message received after sending a message, due to some transient or
+    permanent error.
+    """
+    subscription = models.ForeignKey(Subscription, verbose_name=_('subscription'),
+        on_delete=models.CASCADE)
+    date_create = models.DateTimeField(
+        verbose_name=_('created'), auto_now_add=True, editable=False
+    )
+    hard = models.BooleanField(default=False, verbose_name=_('hard bounce'))
+    status_code = models.CharField(max_length=9, verbose_name=_('status code'))
+    content = models.TextField(verbose_name=_('content'))
+
+    class Meta:
+        verbose_name = _('bounce')
+        verbose_name_plural = _('bounces')
+
+    def __str__(self):
+        return "%(type)s bounce for %(email)s (%(code)s)" % {
+            'type': 'Hard' if self.hard else 'Soft',
+            'email': self.subscription.email,
+            'code': self.status_code,
+        }
+
+
+@python_2_unicode_compatible
 class Article(models.Model):
     """
     An Article within a Message which will be send through a Submission.
@@ -572,7 +605,7 @@ class Submission(models.Model):
         }
 
     def submit(self):
-        subscriptions = self.subscriptions.filter(subscribed=True)
+        subscriptions = self.newsletter.get_subscriptions()
 
         logger.info(
             ugettext(u"Submitting %(submission)s to %(count)d people"),
