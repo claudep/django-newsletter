@@ -34,6 +34,18 @@ def get_default_sites():
     return [site.id for site in Site.objects.all()]
 
 
+def as_verp(address, recipient):
+    """
+    Create sender address implementing the VERP protocol.
+    https://en.wikipedia.org/wiki/Variable_envelope_return_path
+    """
+    if not address:
+        return None
+    user, domain = address.split('@')
+    user2, domain2 = recipient.split('@')
+    return '%s+%s=%s@%s' % (user, user2, domain2, domain)
+
+
 class Singleton(type):
     """
     Singleton metaclass.

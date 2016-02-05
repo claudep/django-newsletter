@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import imaplib
 import itertools
+import os
 import six
 import unittest
 
@@ -9,10 +11,11 @@ from datetime import timedelta
 
 from django.core import mail
 
-from django.test.utils import patch_logger
+from django.test.utils import override_settings, patch_logger
 from django.utils.six.moves import range
 from django.utils.timezone import now
 
+from newsletter.bounces import check_bounces
 from newsletter.models import (
     Newsletter, Subscription, Bounce, Submission, Message, Article,
     get_default_sites,
@@ -453,3 +456,69 @@ class TemplateOverridesTestCase(MailingTestCase, AllEmailsTestsMixin):
         self.assertEmailAlternativeBodyContains(
             'override for %s.html' % action
         )
+
+
+class MockedIMAP4(object):
+    """
+    Fake class to mock imaplib.IMAP4 class for tests.
+    """
+    error = Exception
+    bounce_file = None  # Set from test
+
+    def __init__(self, *args):
+        pass
+
+    def login(self, *args):
+        pass
+
+    def select(self, name):
+        return ('OK',)
+
+    def search(self, *args):
+        return None, '1'
+
+    def fetch(self, num, part):
+        path = os.path.join(os.path.dirname(__file__), 'files', self.bounce_file)
+        with open(path, 'rb') as fh:
+            return None, eval(fh.read())
+
+    def copy(self, *args):
+        return ('OK',)
+
+    def store(self, *args):
+        pass
+
+    def expunge(self):
+        pass
+
+    def logout(self):
+        pass
+
+    def close(self):
+        pass
+
+
+class BounceTestCase(MailingTestCase):
+    def setUp(self):
+        super(BounceTestCase, self).setUp()
+        self.saved_IMAP4 = imaplib.IMAP4
+        imaplib.IMAP4 = MockedIMAP4
+
+    def tearDown(self):
+        imaplib.IMAP4 = self.saved_IMAP4
+        super(BounceTestCase, self).tearDown()
+
+    @override_settings(NEWSLETTER_BOUNCE_ACCOUNT={
+        'email': 'bounce@example.org',
+        'host': 'mail.example.org',
+        'port': 993,
+        'username': 'bounce',
+        'password': 'xxxxxx',
+    })
+    def test_5_1_1_bounce(self):
+        MockedIMAP4.bounce_file = 'bounce-5_1_1.txt'
+        check_bounces()
+        self.assertEqual(self.s.bounce_set.count(), 1)
+        bounce = self.s.bounce_set.first()
+        self.assertTrue(bounce.hard)
+        self.assertEqual(bounce.status_code, '5.1.1')

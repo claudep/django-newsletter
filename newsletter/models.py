@@ -17,9 +17,10 @@ from django.utils.timezone import now
 
 from sorl.thumbnail import ImageField
 
+from .bounces import check_bounces
 from .settings import newsletter_settings
 from .utils import (
-    make_activation_code, get_default_sites, ACTIONS
+    as_verp, make_activation_code, get_default_sites, ACTIONS
 )
 
 logger = logging.getLogger(__name__)
@@ -658,7 +659,8 @@ class Submission(models.Model):
 
         message = EmailMultiAlternatives(
             subject, text,
-            from_email=self.bounce_address or self.newsletter.get_sender(),
+            from_email=(as_verp(self.bounce_address, subscription.email)
+                        or self.newsletter.get_sender()),
             to=[subscription.get_recipient()],
             headers=self.extra_headers,
         )
@@ -697,6 +699,8 @@ class Submission(models.Model):
 
         for submission in todo:
             submission.submit()
+
+        check_bounces()
 
     @classmethod
     def from_message(cls, message):
