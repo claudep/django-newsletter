@@ -107,3 +107,34 @@ To send mail, ``django-newsletter`` uses Django-provided email utilities, so
 ensure that `email settings
 <https://docs.djangoproject.com/en/stable/ref/settings/#email-backend>`_ are
 properly configured for your project.
+
+Bounce management
+=================
+
+.. warning:: Experimental status
+
+   Bounce management is still in an experimental status. Use it at your own
+   risks, and even better, try to improve it by reporting bugs or writing
+   patches.
+
+If you don't want to manually handle the bounce messages coming from any error
+during sending of messages, you can dedicate an email account to these messages
+and ask ``django-newsletter`` to handle them for you. For example, if one of your
+subscriber's address is no longer valid, the error message sent by its former
+provider will be read, interpreted, and no more messages will be sent to this
+subscriber (unless the address is updated). Keeping an up-to-date subscribers
+list is important, as sending many messages to invalid addresses can made you
+appear as a spammer on the Internet.
+
+To enable bounce handling, create a dedicated mailbox and provide the IMAP
+account details in the ``NEWSLETTER_BOUNCE_ACCOUNT`` dictionary setting. For
+example:
+
+    NEWSLETTER_BOUNCE_ACCOUNT = {
+        'email' : 'bounce-address@somedomain.net',
+        'host': 'imap.somedomain.net',
+        'port': 993,
+        'username': 'bounce-address',
+        'password': 'YouRSupErPassw0rD',
+        'use_ssl': True,
+    }

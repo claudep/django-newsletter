@@ -65,6 +65,7 @@ class NewsletterSettings(Settings):
     settings_prefix = 'NEWSLETTER'
 
     DEFAULT_CONFIRM_EMAIL = True
+    DEFAULT_BOUNCE_ACCOUNT = {}
 
     @property
     def DEFAULT_CONFIRM_EMAIL_SUBSCRIBE(self):

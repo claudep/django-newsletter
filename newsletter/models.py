@@ -17,6 +17,7 @@ from django.utils.timezone import now
 
 from sorl.thumbnail import ImageField
 
+from .settings import newsletter_settings
 from .utils import (
     make_activation_code, get_default_sites, ACTIONS
 )
@@ -596,13 +597,23 @@ class Submission(models.Model):
 
     @cached_property
     def extra_headers(self):
-        return {
+        headers = {
             'List-Unsubscribe': 'http://%s%s' % (
                 Site.objects.get_current().domain,
                 reverse('newsletter_unsubscribe_request',
                         args=[self.message.newsletter.slug])
             ),
         }
+        if self.bounce_address:
+            # `From:` header will be different from `MAIL FROM`
+            headers['From'] = self.newsletter.get_sender()
+        return headers
+
+    @cached_property
+    def bounce_address(self):
+        if newsletter_settings.BOUNCE_ACCOUNT and 'email' in newsletter_settings.BOUNCE_ACCOUNT:
+            return newsletter_settings.BOUNCE_ACCOUNT['email']
+        return None
 
     def submit(self):
         subscriptions = self.newsletter.get_subscriptions()
@@ -647,7 +658,7 @@ class Submission(models.Model):
 
         message = EmailMultiAlternatives(
             subject, text,
-            from_email=self.newsletter.get_sender(),
+            from_email=self.bounce_address or self.newsletter.get_sender(),
             to=[subscription.get_recipient()],
             headers=self.extra_headers,
         )
