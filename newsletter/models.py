@@ -145,13 +145,7 @@ class Newsletter(models.Model):
     def get_subscriptions(self):
         logger.debug(u'Looking up subscribers for %s', self)
 
-        return Subscription.objects.annotate(
-            num_hard_bounces=Sum(
-                Case(When(bounce__hard=True, then=1),
-                     default=0,
-                     output_field=models.IntegerField())
-            )
-        ).filter(newsletter=self, subscribed=True, num_hard_bounces=0)
+        return Subscription.objects.filter(newsletter=self).subscribed()
 
     @classmethod
     def get_default(cls):
@@ -159,6 +153,17 @@ class Newsletter(models.Model):
             return cls.objects.all()[0]
         except IndexError:
             return None
+
+
+class SubscribedQuerySet(models.QuerySet):
+    def subscribed(self):
+        return self.annotate(
+            num_hard_bounces=Sum(
+                Case(When(bounce__hard=True, then=1),
+                     default=0,
+                     output_field=models.IntegerField())
+            )
+        ).filter(subscribed=True, num_hard_bounces=0)
 
 
 @python_2_unicode_compatible
@@ -197,6 +202,8 @@ class Subscription(models.Model):
         if not self.user:
             self.email_field = email
     email = property(get_email, set_email)
+
+    objects = SubscribedQuerySet.as_manager()
 
     def update(self, action):
         """
@@ -617,7 +624,7 @@ class Submission(models.Model):
         return None
 
     def submit(self):
-        subscriptions = self.newsletter.get_subscriptions()
+        subscriptions = self.subscriptions.subscribed()
 
         logger.info(
             ugettext(u"Submitting %(submission)s to %(count)d people"),
