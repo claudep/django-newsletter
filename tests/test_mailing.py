@@ -503,6 +503,8 @@ class BounceTestCase(MailingTestCase):
         super(BounceTestCase, self).setUp()
         self.saved_IMAP4 = imaplib.IMAP4
         imaplib.IMAP4 = MockedIMAP4
+        self.s.email = 'Test@test.com'  # To test case insensibility
+        self.s.save()
 
     def tearDown(self):
         imaplib.IMAP4 = self.saved_IMAP4

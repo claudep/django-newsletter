@@ -57,8 +57,13 @@ def check_bounces():
             for part in msgobj.walk():
                 if part.get_content_type() == 'message/delivery-status':
                     for subpart in part.walk():
-                        if not addr and 'Original-Recipient' in subpart:
-                            addr = subpart['Original-Recipient'].strip('rfc822;')
+                        if not addr:
+                            if 'Original-Recipient' in subpart:
+                                addr = subpart['Original-Recipient'].strip()
+                            elif 'Final-Recipient' in subpart:
+                                addr = subpart['Final-Recipient'].strip()
+                            if addr and 'rfc822;' in addr:
+                                addr = addr.replace('rfc822;', '')
                         if 'Status' in subpart:
                             status = subpart['Status']
                         if addr and status:
@@ -67,7 +72,8 @@ def check_bounces():
             if not addr or not status:
                 continue  # Unable to extract address and status, ignoring...
 
-            for subscr in Subscription.objects.filter(Q(user__email=addr)|Q(email_field=addr)):
+            for subscr in Subscription.objects.filter(
+                    Q(user__email__iexact=addr)|Q(email_field__iexact=addr)):
                 Bounce.objects.create(
                     subscription=subscr, hard=status.startswith('5'),
                     status_code=status, content=data[0][1],
