@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 # Regex to catch VERP-encoded address: bounce+bob=example.org@example.net
 verp_re = re.compile(r'[^\+]+\+(?P<user>[^=]+)=(?P<domain>[^@]+)@.+')
 
+MAILBOX_FULL = '5.2.2'
+
 
 def check_bounces():
     """
@@ -74,8 +76,9 @@ def check_bounces():
 
             for subscr in Subscription.objects.filter(
                     Q(user__email__iexact=addr)|Q(email_field__iexact=addr)):
+                hard = status.startswith('5') and status != MAILBOX_FULL
                 Bounce.objects.create(
-                    subscription=subscr, hard=status.startswith('5'),
+                    subscription=subscr, hard=hard,
                     status_code=status, content=data[0][1],
                 )
 
