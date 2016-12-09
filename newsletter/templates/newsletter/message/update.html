@@ -6,14 +6,14 @@
     <title>{% blocktrans with title=newsletter.title %}Update of subscription to {{ title }}{% endblocktrans %}</title>
 </head>
 <body>
-{% blocktrans with name=subscription.name title=newsletter.title domain=site.domain url=subscription.update_activate_url %}Dear {{ name }},
+{% blocktrans with name=subscription.name title=newsletter.title domain=site.domain url=subscription.update_activate_url %}<p>Dear {{ name }},</p>
 
-you, or someone in your name requested updating your personal information for {{ title }}.
+<p>you, or someone in your name requested updating your personal information for {{ title }}.</p>
 
-To make changes to your information in our database, please follow this activation link:
-http://{{ domain }}{{ url }}
+<p>To make changes to your information in our database, please follow this activation link:
+<a href="http://{{ domain }}{{ url }}">http://{{ domain }}{{ url }}</a></p>
 
-Kind regards,{% endblocktrans %}
+<p>Kind regards,</p>{% endblocktrans %}
 {{ newsletter.sender }}
 </body>
 </html>
