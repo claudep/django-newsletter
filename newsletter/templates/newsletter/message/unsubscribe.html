@@ -6,7 +6,7 @@
     <title>{% blocktrans with title=newsletter.title %}Unsubscription from {{ title }}{% endblocktrans %}</title>
 </head>
 <body>
-{% blocktrans with name=subscription.name title=newsletter.title domain=site.domain url=subscription.unsubscribe_activate_url %}<p>Dear {{ name }},</p>
+{% blocktrans with name=subscription.name_or_email title=newsletter.title domain=site.domain url=subscription.unsubscribe_activate_url %}<p>Dear {{ name }},</p>
 
 <p>you, or someone in your name requested unsubscription from {{ title }}.</p>
 

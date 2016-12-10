@@ -203,6 +203,10 @@ class Subscription(models.Model):
             self.email_field = email
     email = property(get_email, set_email)
 
+    @property
+    def name_or_email(self):
+        return self.name or self.email
+
     objects = SubscribedQuerySet.as_manager()
 
     def update(self, action):
