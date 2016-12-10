@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-newsletter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 10:12+0100\n"
+"POT-Creation-Date: 2016-12-10 11:18+0100\n"
 "PO-Revision-Date: 2016-12-10 16:42+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: French (http://www.transifex.com/dokterbob/django-newsletter/"
@@ -128,11 +128,11 @@ msgstr "Inscriptions"
 msgid "Submissions"
 msgstr "Publications"
 
-#: admin.py:95 models.py:104 models.py:315 models.py:522 models.py:746
+#: admin.py:95 models.py:104 models.py:319 models.py:526 models.py:750
 msgid "newsletter"
 msgstr "newsletter"
 
-#: admin.py:113 models.py:597
+#: admin.py:113 models.py:601
 msgid "submission"
 msgstr "publication"
 
@@ -172,7 +172,7 @@ msgstr "Votre publication est en cours d'envoi."
 msgid "Optional"
 msgstr "Facultatif"
 
-#: admin.py:249 models.py:492 models.py:533 models.py:750
+#: admin.py:249 models.py:496 models.py:537 models.py:754
 msgid "message"
 msgstr "message"
 
@@ -181,7 +181,7 @@ msgstr "message"
 msgid "Preview"
 msgstr "Prévisualisation"
 
-#: admin.py:271 views.py:606
+#: admin.py:271 views.py:610
 msgid ""
 "No HTML template associated with the newsletter this message belongs to."
 msgstr ""
@@ -199,11 +199,11 @@ msgstr "Désinscrit"
 msgid "Unactivated"
 msgstr "Désactivé"
 
-#: admin.py:402 models.py:329
+#: admin.py:402 models.py:333
 msgid "subscribe date"
 msgstr "date d'inscription"
 
-#: admin.py:409 models.py:337
+#: admin.py:409 models.py:341
 msgid "unsubscribe date"
 msgstr "date de désinscription"
 
@@ -376,165 +376,165 @@ msgstr "utilisateur"
 msgid "optional"
 msgstr "facultatif"
 
-#: models.py:224
+#: models.py:228
 #, python-format
 msgid "Updated subscription %(subscription)s to %(action)s."
 msgstr ""
 "L'inscription %(subscription)s a été mise à jour avec l'action "
 "« %(action)s »."
 
-#: models.py:266
+#: models.py:270
 msgid "Neither an email nor a username is set. This asks for inconsistency!"
 msgstr ""
 "Ni adresse électronique, ni nom d'utilisateur n'ont été fournis. Il manque "
 "quelque chose !"
 
-#: models.py:270
+#: models.py:274
 msgid "If user is set, email must be null and vice versa."
 msgstr ""
 "Si un utilisateur est défini, l'adresse électronique doit être vide et "
 "inversement."
 
-#: models.py:312
+#: models.py:316
 msgid "IP address"
 msgstr "Adresse IP"
 
-#: models.py:321
+#: models.py:325
 msgid "activation code"
 msgstr "code d'activation"
 
-#: models.py:326
+#: models.py:330
 msgid "subscribed"
 msgstr "inscrit"
 
-#: models.py:334
+#: models.py:338
 msgid "unsubscribed"
 msgstr "désinscrit"
 
-#: models.py:342
+#: models.py:346
 #, python-format
 msgid "%(name)s <%(email)s> to %(newsletter)s"
 msgstr "%(name)s <%(email)s> à %(newsletter)s"
 
-#: models.py:349
+#: models.py:353
 #, python-format
 msgid "%(email)s to %(newsletter)s"
 msgstr "%(email)s à %(newsletter)s"
 
-#: models.py:355 models.py:443
+#: models.py:359 models.py:447
 msgid "subscription"
 msgstr "inscription"
 
-#: models.py:356
+#: models.py:360
 msgid "subscriptions"
 msgstr "inscriptions"
 
-#: models.py:446 models.py:526
+#: models.py:450 models.py:530
 msgid "created"
 msgstr "créé"
 
-#: models.py:448
+#: models.py:452
 msgid "hard bounce"
 msgstr "retour définitif"
 
-#: models.py:449
+#: models.py:453
 msgid "status code"
 msgstr "code de statut"
 
-#: models.py:450
+#: models.py:454
 msgid "content"
 msgstr "contenu"
 
-#: models.py:453
+#: models.py:457
 msgid "bounce"
 msgstr "retour"
 
-#: models.py:454
+#: models.py:458
 msgid "bounces"
 msgstr "retours"
 
-#: models.py:471
+#: models.py:475
 msgid ""
 "Sort order determines the order in which articles are concatenated in a post."
 msgstr ""
 "L'orde de tri détermine l'ordre dans lequel les articles sont concaténés "
 "dans un post."
 
-#: models.py:473
+#: models.py:477
 msgid "sort order"
 msgstr "ordre de tri"
 
-#: models.py:476 models.py:518
+#: models.py:480 models.py:522
 msgid "title"
 msgstr "titre"
 
-#: models.py:477
+#: models.py:481
 msgid "text"
 msgstr "texte"
 
-#: models.py:480
+#: models.py:484
 msgid "link"
 msgstr "lien"
 
-#: models.py:486
+#: models.py:490
 msgid "image"
 msgstr "image"
 
-#: models.py:498
+#: models.py:502
 msgid "article"
 msgstr "article"
 
-#: models.py:499
+#: models.py:503
 msgid "articles"
 msgstr "articles"
 
-#: models.py:519
+#: models.py:523
 msgid "slug"
 msgstr "slug"
 
-#: models.py:529
+#: models.py:533
 msgid "modified"
 msgstr "modifié"
 
-#: models.py:534
+#: models.py:538
 msgid "messages"
 msgstr "messages"
 
-#: models.py:539
+#: models.py:543
 #, python-format
 msgid "%(title)s in %(newsletter)s"
 msgstr "%(title)s dans %(newsletter)s"
 
-#: models.py:598
+#: models.py:602
 msgid "submissions"
 msgstr "publications"
 
-#: models.py:601
+#: models.py:605
 #, python-format
 msgid "%(newsletter)s on %(publish_date)s"
 msgstr "%(newsletter)s le %(publish_date)s"
 
-#: models.py:630
+#: models.py:634
 #, python-format
 msgid "Submitting %(submission)s to %(count)d people"
 msgstr "Publication de %(submission)s à %(count)d personnes."
 
-#: models.py:685
+#: models.py:689
 #, python-format
 msgid "Submitting message to: %s."
 msgstr "Publication du message à : %s."
 
-#: models.py:694
+#: models.py:698
 #, python-format
 msgid "Message %(subscription)s failed with error: %(error)s"
 msgstr "Le message %(subscription)s a échoué avec cette erreur : %(error)s"
 
-#: models.py:714
+#: models.py:718
 #, python-format
 msgid "Submission of message %s"
 msgstr "Publication du message %s"
 
-#: models.py:756
+#: models.py:760
 msgid ""
 "If you select none, the system will automatically find the subscribers for "
 "you."
@@ -542,31 +542,31 @@ msgstr ""
 "Si vous n'en choisissez pas, le système va automatiquement choisir les "
 "destinataires pour vous."
 
-#: models.py:758
+#: models.py:762
 msgid "recipients"
 msgstr "destinataires"
 
-#: models.py:763
+#: models.py:767
 msgid "publication date"
 msgstr "date de publication"
 
-#: models.py:767
+#: models.py:771
 msgid "publish"
 msgstr "publier"
 
-#: models.py:768
+#: models.py:772
 msgid "Publish in archive."
 msgstr "Publier dans l'archive."
 
-#: models.py:772
+#: models.py:776
 msgid "prepared"
 msgstr "préparé"
 
-#: models.py:776
+#: models.py:780
 msgid "sent"
 msgstr "envoyé"
 
-#: models.py:780
+#: models.py:784
 msgid "sending"
 msgstr "envoi en cours"
 
@@ -666,7 +666,8 @@ msgid ""
 msgstr ""
 "<p>Cher/chère %(name)s,</p>\n"
 "\n"
-"<p>vous, ou quelqu'un en votre nom, a demandé d'être inscrit à %(title)s.</p>\n"
+"<p>vous, ou quelqu'un en votre nom, a demandé d'être inscrit à %(title)s.</"
+"p>\n"
 "\n"
 "<p>Si vous souhaitez confirmer cette inscription, veuillez suivre ce lien "
 "d'activation :<br/>\n"
@@ -722,7 +723,8 @@ msgid ""
 msgstr ""
 "<p>Cher/chère %(name)s,</p>\n"
 "\n"
-"<p>vous, ou quelqu'un en votre nom, a demandé d'être désinscrit de %(title)s.</p>\n"
+"<p>vous, ou quelqu'un en votre nom, a demandé d'être désinscrit de %(title)s."
+"</p>\n"
 "\n"
 "<p>Si vous souhaitez confirmer cette désinscription, veuillez suivre ce lien "
 "d'activation :<br/>\n"
@@ -778,11 +780,11 @@ msgid ""
 msgstr ""
 "<p>Cher/chère %(name)s,</p>\n"
 "\n"
-"<p>vous, ou quelqu'un en votre nom, a demandé de mettre à jour vos informations "
-"personnelles pour %(title)s.</p>\n"
+"<p>vous, ou quelqu'un en votre nom, a demandé de mettre à jour vos "
+"informations personnelles pour %(title)s.</p>\n"
 "\n"
-"<p>Pour effectuer les modifications des informations de notre base de données, "
-"veuillez suivre ce lien d'activation :<br/>\n"
+"<p>Pour effectuer les modifications des informations de notre base de "
+"données, veuillez suivre ce lien d'activation :<br/>\n"
 "<a href=\"http://%(domain)s%(url)s\">http://%(domain)s%(url)s</a></p>\n"
 "\n"
 "<p>Meilleures salutations,</p>"
@@ -852,17 +854,6 @@ msgstr "Mettre à jour les inscriptions"
 #: templates/newsletter/submission_archive.html:10
 msgid "Newsletter archive"
 msgstr "Archives de la lettre de nouvelles"
-
-#: templates/newsletter/subscription_activate.html:5
-#: templates/newsletter/subscription_activate.html:8
-#: templates/newsletter/subscription_subscribe_activated.html:5
-#: templates/newsletter/subscription_subscribe_activated.html:8
-#: templates/newsletter/subscription_unsubscribe_activated.html:5
-#: templates/newsletter/subscription_unsubscribe_activated.html:8
-#: templates/newsletter/subscription_update_activated.html:5
-#: templates/newsletter/subscription_update_activated.html:8
-msgid "activate"
-msgstr "activer"
 
 #: templates/newsletter/subscription_activate.html:13
 msgid "Activate"
@@ -980,35 +971,56 @@ msgstr ""
 msgid "Your changes have been saved."
 msgstr "Vos modifications ont été enregistrées."
 
-#: views.py:306
+#. Translators: action can be 'subscribe', 'unsubscribe', 'update'
+#: views.py:218
+#, python-format
+msgid "%(action)s activate"
+msgstr "activation de « %(action)s »"
+
+#: views.py:294 views.py:437
+msgid "subscribe"
+msgstr "inscription"
+
+#: views.py:310
 #, python-format
 msgid "You have been subscribed to %s."
 msgstr "Vous avez été inscrit à %s."
 
-#: views.py:310
+#: views.py:314
 #, python-format
 msgid "User %(rs)s subscribed to %(my_newsletter)s."
 msgstr "L'utilisateur %(rs)s s'est inscrit à %(my_newsletter)s."
 
-#: views.py:320
+#: views.py:324
 #, python-format
 msgid "You are already subscribed to %s."
 msgstr "Vous êtes déjà inscrit à %s."
 
-#: views.py:345
+#: views.py:331 views.py:464
+msgid "unsubscribe"
+msgstr "désinscription"
+
+#: views.py:349
 #, python-format
 msgid "You have been unsubscribed from %s."
 msgstr "Vous avez été désinscrit de %s."
 
-#: views.py:349
+#: views.py:353
 #, python-format
 msgid "User %(rs)s unsubscribed from %(my_newsletter)s."
 msgstr "L'utilisateur %(rs)s s'est désinscrit de %(my_newsletter)s."
 
-#: views.py:362
+#: views.py:366
 #, python-format
 msgid "You are not subscribed to %s."
 msgstr "Vous n'êtes pas inscrit à %s."
+
+#: views.py:479
+msgid "update"
+msgstr "mise à jour"
+
+#~ msgid "activate"
+#~ msgstr "activer"
 
 #~ msgid "An e-mail address is required."
 #~ msgstr "Une adresse de courriel est obligatoire."
