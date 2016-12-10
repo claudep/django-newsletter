@@ -25,7 +25,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import ugettext, ugettext_lazy as _, ugettext_noop
 from django.utils import timezone
 
 from django.forms.models import modelformset_factory
@@ -212,7 +212,11 @@ class ActionMixin(ProcessUrlDataMixin):
         """ Add action to context. """
         context = super(ActionMixin, self).get_context_data(**kwargs)
 
-        context['action'] = self.action
+        context.update({
+            'action': self.action,
+            # Translators: action can be 'subscribe', 'unsubscribe', 'update'
+            'action_title': _("%(action)s activate") % {'action': _(self.action)},
+        })
 
         return context
 
@@ -287,7 +291,7 @@ class ActionUserView(ActionTemplateView):
 
 
 class SubscribeUserView(ActionUserView):
-    action = 'subscribe'
+    action = ugettext_noop('subscribe')
 
     def get(self, request, *args, **kwargs):
         already_subscribed = False
@@ -324,7 +328,7 @@ class SubscribeUserView(ActionUserView):
 
 
 class UnsubscribeUserView(ActionUserView):
-    action = 'unsubscribe'
+    action = ugettext_noop('unsubscribe')
 
     def get(self, request, *args, **kwargs):
         not_subscribed = False
@@ -430,7 +434,7 @@ class ActionRequestView(ActionFormView):
 
 
 class SubscribeRequestView(ActionRequestView):
-    action = 'subscribe'
+    action = ugettext_noop('subscribe')
     form_class = SubscribeRequestForm
     confirm = False
 
@@ -457,7 +461,7 @@ class SubscribeRequestView(ActionRequestView):
 
 
 class UnsubscribeRequestView(ActionRequestView):
-    action = 'unsubscribe'
+    action = ugettext_noop('unsubscribe')
     form_class = UnsubscribeRequestForm
     confirm = False
 
@@ -472,7 +476,7 @@ class UnsubscribeRequestView(ActionRequestView):
 
 
 class UpdateRequestView(ActionRequestView):
-    action = 'update'
+    action = ugettext_noop('update')
     form_class = UpdateRequestForm
 
     def no_email_confirm(self, form):
