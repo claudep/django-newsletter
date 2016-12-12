@@ -529,7 +529,13 @@ class SubscriptionAdmin(NewsletterAdminLinkMixin, ExtendibleModelAdminMixin,
         return my_urls + urls
 
 
+class BounceAdmin(admin.ModelAdmin):
+    raw_id_fields = ("subscription",)
+    list_display = ("__str__", "date_create")
+
+
 admin.site.register(Newsletter, NewsletterAdmin)
 admin.site.register(Submission, SubmissionAdmin)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
+admin.site.register(Bounce, BounceAdmin)
