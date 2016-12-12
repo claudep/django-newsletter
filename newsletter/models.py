@@ -438,6 +438,61 @@ class Subscription(models.Model):
         })
 
 
+# From https://tools.ietf.org/html/rfc3463
+SMTP_ERROR_CODES = {
+    '5.0.0': "Other undefined Status",
+    '5.1.0': "Other address status",
+    '5.1.1': "Bad destination mailbox address",
+    '5.1.2': "Bad destination system address",
+    '5.1.3': "Bad destination mailbox address syntax",
+    '5.1.4': "Destination mailbox address ambiguous",
+    '5.1.6': "Destination mailbox has moved, No forwarding address",
+    '5.1.7': "Bad sender's mailbox address syntax",
+    '5.1.8': "Bad sender's system address",
+    '5.2.0': "Other or undefined mailbox status",
+    '5.2.1': "Mailbox disabled, not accepting messages",
+    '5.2.2': "Mailbox full",
+    '5.2.3': "Message length exceeds administrative limit",
+    '5.2.4': "Mailing list expansion problem",
+    '5.3.0': "Other or undefined mail system status",
+    '5.3.1': "Mail system full",
+    '5.3.2': "System not accepting network messages",
+    '5.3.3': "System not capable of selected features",
+    '5.3.4': "Message too big for system",
+    '5.3.5': "System incorrectly configured",
+    '5.4.0': "Other or undefined network or routing status",
+    '5.4.1': "No answer from host",
+    '5.4.2': "Bad connection",
+    '5.4.3': "Directory server failure",
+    '5.4.4': "Unable to route",
+    '5.4.5': "Mail system congestion",
+    '5.4.6': "Routing loop detected",
+    '5.4.7': "Delivery time expired",
+    '5.5.0': "Other or undefined protocol status",
+    '5.5.1': "Invalid command",
+    '5.5.2': "Syntax error",
+    '5.5.3': "Too many recipients",
+    '5.5.4': "Invalid command arguments",
+    '5.5.5': "Wrong protocol version",
+    '5.6.0': "Other or undefined media error",
+    '5.6.1': "Media not supported",
+    '5.6.2': "Conversion required and prohibited",
+    '5.6.3': "Conversion required but not supported",
+    '5.6.4': "Conversion with loss performed",
+    '5.6.5': "Conversion Failed",
+    '5.7.0': "Other or undefined security status",
+    '5.7.1': "Delivery not authorized, message refused",
+    '5.7.2': "Mailing list expansion prohibited",
+    '5.7.3': "Security conversion required but not possible",
+    '5.7.4': "Security features not supported",
+    '5.7.5': "Cryptographic failure",
+    '5.7.6': "Cryptographic algorithm not supported",
+    '5.7.7': "Message integrity failure",
+    # MS-specific ?
+    '5.7.606': "Access denied, banned sending IP",
+}
+
+
 @python_2_unicode_compatible
 class Bounce(models.Model):
     """
@@ -463,6 +518,13 @@ class Bounce(models.Model):
             'email': self.subscription.email,
             'code': self.status_code,
         }
+
+    @property
+    def status_string(self):
+        try:
+            return SMTP_ERROR_CODES[self.status_code]
+        except KeyError:
+            return 'Unknown error code'
 
 
 @python_2_unicode_compatible

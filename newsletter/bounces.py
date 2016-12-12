@@ -81,6 +81,7 @@ def check_bounces():
                     subscription=subscr, hard=hard,
                     status_code=status, content=data[0][1],
                 )
+                logger.info('%s bounced with %s' % (subscr.email, status))
 
             # Move handled bounce aside
             if conn.copy(num, passed_bounces_folder)[0] == 'OK':
