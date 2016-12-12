@@ -450,7 +450,7 @@ class Bounce(models.Model):
         verbose_name=_('created'), auto_now_add=True, editable=False
     )
     hard = models.BooleanField(default=False, verbose_name=_('hard bounce'))
-    status_code = models.CharField(max_length=9, verbose_name=_('status code'))
+    status_code = models.CharField(max_length=20, verbose_name=_('status code'))
     content = models.TextField(verbose_name=_('content'))
 
     class Meta:
